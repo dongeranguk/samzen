@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,5 +81,57 @@ public class ArticleDao {
 			article.setContent(rs.getString("content"));
 		}
 		return article;
+	}
+	
+	public int insert(Connection conn, Article article) throws SQLException {
+		PreparedStatement pstmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement("insert article1 "
+					+ "(article_id, group_id, sequence_no, posting_date, read_count,"
+					+ "writer_name, password, title, content) "
+					+ "values (article_id_seq.NEXTVAL, ?, ?, ?, 0, ?, ?, ?, ?)");
+			pstmt.setInt(1, article.getGroupId());
+			pstmt.setString(2, article.getSequenceNumber());
+			pstmt.setTimestamp(3, new Timestamp(article.getPostingDate().getTime()));
+			pstmt.setString(4,article.getWriterName());
+			pstmt.setString(5, article.getPassword());
+			pstmt.setString(6, article.getTitle());
+			pstmt.setString(7, article.getContent());
+			int insertedCount = pstmt.executeUpdate();
+			
+			if(insertedCount > 0) {
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery("select article_id_seq.CURRVAL from dual");
+				if(rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+			return -1;
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
+		}
+	}
+	
+	public Article selectById(Connection conn, int articleId) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("select * from article1 where article_id = ?");
+			pstmt.setInt(1, articleId);
+			rs = pstmt.executeQuery();
+			if(!rs.next()) {
+				return null;
+			}
+			Article article = makeArticleFromResultSet(rs, true);
+			return article; 
+		}finally { 
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
 	}
 }
