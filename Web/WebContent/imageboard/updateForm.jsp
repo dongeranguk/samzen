@@ -2,8 +2,8 @@
 <%
 	request.setCharacterEncoding("euc-kr");
 %>
-<jsp:forward page="../tempate/template.jsp">
-	<jsp:param name="CONTENTPAGE" value="../updateForm_view.jsp" />
+<jsp:forward page="./template.jsp">
+	<jsp:param name="CONTENTPAGE" value="updateForm_view.jsp" />
 </jsp:forward>
 
 <%@ page contentType="text/html; charset=euc-kr" %>
@@ -32,9 +32,9 @@ function validate(form) {
 	}
 }
 </script>
-<form action="update.jsp method="post" enctype="multipart/form-data"
+<form action="update.jsp" method="post" enctype="multipart/form-data"
 	onSubmit="return validate(this)">
-<input type="hidden name="id" value="${theme.id}">
+<input type="hidden" name="id" value="${theme.id}">
 <table width="100%" border="1" cellpadding="1" cellspacing="0">
 <tr>
 	<td>Á¦¸ñ</td>
@@ -53,7 +53,7 @@ function validate(form) {
 	<td><input type="file" name="imageFile">
 	<c:if test="${!empty theme.image}">
 	<br>
-	<img src="/EZEN/images/${theme.image}" width="150" border="0">
+	<img src="C:/Users/rooet/git/samzen/Web/WebContent/image/${theme.image}" width="150" border="0">
 	</c:if>
 	</td>
 </tr>

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
-<%@ page errorPage="../error/error_view.jsp %>
+<%@ page errorPage="./error/error_view.jsp" %>
 
 <%@ page import="java.sql.Timestamp" %>
 <%@ page import="java.io.File" %>
@@ -15,7 +15,7 @@
 <%
 	FileUploadRequestWrapper requestWrap = new FileUploadRequestWrapper(
 		request, -1, -1,
-		"C:\\Java\\APP\\EZEN\\WebContent\\temp");
+		"C:/Users/rooet/git/samzen/Web/WebContent/temp");
 	HttpServletRequest tempRequest = request;
 	request = requestWrap;
 %>
@@ -29,13 +29,13 @@
 		image = Long.toString(System.currentTimeMillis());
 		
 		File imageFile = new File(
-				"C:\\Java\\APP\\EZEN\\WebContent\\image",
+				"C:/Users/rooet/git/samzen/Web/WebContent/image",
 				image);
 		
 		if(imageFile.exists()) {
 			for(int i=0; true; i++) {
 				imageFile = new File(
-						"C:\\Java\\APP\\EZEN\\WebContent\\image",
+						"C:/Users/rooet/git/samzen/Web/WebContent/image",
 						image+"_"+i);
 				if(!imageFile.exists()) {
 					image = image + "_" + i;
@@ -46,7 +46,7 @@
 		imageFileItem.write(imageFile);
 		
 		File destFile = new File(
-				"C:\\Java\\APP\\EZEN\\WebContent\\image",
+				"C:/Users/rooet/git/samzen/Web/WebContent/image",
 				image+".small.jpg");
 		ImageUtil.resize(imageFile, destFile, 50, ImageUtil.RATIO);
 	}

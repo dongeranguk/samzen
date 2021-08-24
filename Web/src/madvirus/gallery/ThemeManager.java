@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import jdbc.JdbcUtil;
+import jdbc.connection.ConnectionProvider;
 import madvirus.sequence.Sequencer;
 
 public class ThemeManager {
@@ -29,6 +30,12 @@ public class ThemeManager {
 	private ThemeManager() {}
 	
 	
+	 private Connection getConnection() throws Exception { 
+		 return ConnectionProvider.getConnection(); 
+	}
+	//오류:connection is closed sequencer에서 conn.close(); 실행해서 오류 발생 
+	//수정:conn.close(); 삭제
+	 
 	//새로운 글을 삽입한다.
 		public void insert(Theme theme) throws Exception {
 			Connection conn = null;
@@ -72,7 +79,7 @@ public class ThemeManager {
 					if (rsOrder.next()) {
 						maxOrder = rsOrder.getInt(1);
 					}
-					maxOrder ++;
+					maxOrder++;
 					theme.setOrderNo(maxOrder);
 				}
 				
@@ -241,11 +248,6 @@ public class ThemeManager {
 				JdbcUtil.close(conn);
 			}
 		}
-	}
-
-	private Connection getConnection() throws Exception {
-		return DriverManager.getConnection("jdbc:apache:commons:dbcp:/pool");
-	}
 	
 	public List selectList(List whereCond, Map valueMap, int startRow, int endRow) throws Exception {
 		if(valueMap == null) valueMap = Collections.EMPTY_MAP;
@@ -414,7 +416,7 @@ public class ThemeManager {
 					"delete from THEME_CONTENT where THEME_MESSAGE_ID = ?");
 			
 			pstmtMessage.setInt(1, id);
-			pstmtContent.setInt(2, id);
+			pstmtContent.setInt(1, id);
 			
 			int updatedCount1 = pstmtMessage.executeUpdate();
 			int updatedCount2 = pstmtContent.executeUpdate();

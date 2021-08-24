@@ -1,5 +1,7 @@
 package madvirus.gallery;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 
 public class Theme {
@@ -69,8 +71,13 @@ public class Theme {
 		return image;
 	}
 	public void setImage(String image) {
-		this.image = image;
+		try {
+		this.image = URLEncoder.encode(image,"euc-kr");
+		} catch(UnsupportedEncodingException ex) {
+			ex.printStackTrace();
+		}
 	}
+	
 	public String getPassword() {
 		return password;
 	}

@@ -41,7 +41,12 @@ public class Sequencer {
 				return 1;
 			}
 		} finally {
-			JdbcUtil.close(conn);
+			if (rsSelect != null)
+                try { rsSelect.close(); } catch(SQLException ex) {}
+            if (pstmtSelect != null)
+                try { pstmtSelect.close(); } catch(SQLException ex) {}
+            if (pstmtUpdate != null)
+                try { pstmtUpdate.close(); } catch(SQLException ex) {}
 		}
 	}
 }

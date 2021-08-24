@@ -33,7 +33,7 @@ public class CommentDBBean {
 			pstmt.setTimestamp(5, cdb.getReg_date());
 			pstmt.setString(6, cdb.getIp());
 			pstmt.setInt(7, cdb.getComment_num()); //뺴먹어서 댓글 안달림
-			pstmt.executeUpdate(); //오류 : 댓글 달아도 반응 x -> 실행구문을 안넣으니 실행이 안되지!
+			pstmt.executeUpdate(); //오류 : 댓글 달아도 반응 x -> 실행구문을 안넣으니 실행이 안됨
 		} catch(Exception ex) {
 			ex.printStackTrace();
 		} finally {
